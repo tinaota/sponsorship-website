@@ -1,0 +1,43 @@
+.gridWrapper {
+    padding: 24px 0;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.count {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+}
+
+.viewToggle {
+    display: flex;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #E3E4E6;
+}
+
+.toggleBtn {
+    padding: 8px 16px;
+    border: none;
+    background: white;
+    font-size: 0.9rem;
+    cursor: pointer;
+    color: var(--color-text-secondary);
+}
+
+.toggleBtn.active {
+    background-color: var(--color-sponsor-primary);
+    color: white;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+}
