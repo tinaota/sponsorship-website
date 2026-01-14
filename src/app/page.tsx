@@ -8,7 +8,7 @@ export default function SponsorshipPage() {
     return (
         <div className={styles.page}>
             <Header />
-            <main className={styles.main}>
+            <main className={styles.main} id="main-content">
                 <FilterSection />
                 <ChildGrid />
             </main>

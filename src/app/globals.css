@@ -73,6 +73,28 @@ ul {
     background: transparent;
 }
 
+/* Accessibility */
+:focus-visible {
+    outline: 3px solid var(--color-sponsor-accent) !important;
+    outline-offset: 2px;
+}
+
+.skipLink {
+    position: absolute;
+    top: -100px;
+    left: 0;
+    background: white;
+    padding: 8px;
+    z-index: 9999;
+    transition: top 0.2s;
+    color: var(--color-sponsor-primary);
+    font-weight: bold;
+}
+
+.skipLink:focus {
+    top: 0;
+}
+
 ::-webkit-scrollbar-thumb {
     background: #E3E4E6;
     border-radius: 3px;

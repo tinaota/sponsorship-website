@@ -7,6 +7,10 @@
     cursor: pointer;
     display: flex;
     flex-direction: column;
+    height: 100%;
+    /* Ensure it fills the grid cell */
+    min-height: 480px;
+    /* Force enough height for all content */
 }
 
 .card:hover {
@@ -14,14 +18,28 @@
     box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
 }
 
+.card:focus-within {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 0 0 3px var(--color-sponsor-accent);
+}
+
 .imageContainer {
     position: relative;
-    background-color: var(--color-sponsor-card-bg);
-    /* Soft purplish-blue bg from design */
     height: 240px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background-color: var(--color-sponsor-card-bg);
+    overflow: hidden;
+}
+
+.image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.card:hover .image {
+    transform: scale(1.05);
+    /* Zoom effect on hover */
 }
 
 .badge {
@@ -34,22 +52,23 @@
     border-radius: 20px;
     font-size: 0.75rem;
     font-weight: 600;
-}
-
-.icon {
-    font-size: 4rem;
-    /* Placeholder for the graphical icon in the design */
+    z-index: 2;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .content {
     padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
 }
 
 .name {
     font-size: 1.25rem;
     font-weight: 700;
     color: var(--color-text-main);
-    margin-bottom: 4px;
+    margin: 0;
 }
 
 .details {
@@ -58,4 +77,34 @@
     display: flex;
     align-items: center;
     gap: 6px;
+}
+
+.bio {
+    font-style: italic;
+    color: #555;
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+
+.ctaBtn {
+    margin-top: auto;
+    width: 100%;
+    padding: 10px;
+    background-color: var(--color-sponsor-primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.ctaBtn:hover {
+    background-color: #483CB5;
+}
+
+.ctaBtn:focus {
+    outline: 2px solid var(--color-sponsor-accent);
+    outline-offset: 2px;
 }

@@ -8,7 +8,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 1000;
 }
 
 .logo {
@@ -43,17 +43,21 @@
 }
 
 .donateBtn {
-    background-color: var(--color-sponsor-primary);
+    background-color: #D32F2F;
+    /* Red/Pink for higher urgency/visibility per feedback */
     color: white;
-    padding: 10px 24px;
-    border-radius: 20px;
-    font-weight: 600;
-    font-size: 0.9rem;
-    transition: background-color 0.2s;
+    padding: 12px 28px;
+    /* Larger touch target */
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 1rem;
+    transition: background-color 0.2s, transform 0.1s;
+    box-shadow: 0 4px 6px rgba(211, 47, 47, 0.2);
 }
 
 .donateBtn:hover {
-    background-color: #483CB5;
+    background-color: #B71C1C;
+    transform: translateY(-2px);
 }
 
 .userIcon {

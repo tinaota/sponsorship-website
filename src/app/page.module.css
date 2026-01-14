@@ -11,4 +11,6 @@
     width: 100%;
     margin: 0 auto;
     padding: 40px 24px;
+    scroll-margin-top: 100px;
+    /* For sticky header offset */
 }
