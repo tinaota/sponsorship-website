@@ -1,0 +1,47 @@
+.hero {
+    position: relative;
+    width: 100%;
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=2670&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 80px 20px 40px;
+    text-align: center;
+}
+
+.content {
+    max-width: 900px;
+    margin-bottom: 40px;
+    z-index: 2;
+}
+
+.title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 16px;
+    line-height: 1.1;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.subtitle {
+    font-size: 1.25rem;
+    font-weight: 500;
+    margin-bottom: 32px;
+    opacity: 0.9;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.filterWrapper {
+    width: 100%;
+    max-width: 1100px;
+    z-index: 2;
+    /* Optional: pull it down to overlap the bottom edge */
+    /* transform: translateY(20%); */
+}

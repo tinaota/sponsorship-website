@@ -8,7 +8,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     position: sticky;
     top: 0;
-    z-index: 1000;
+    z-index: 100;
 }
 
 .logo {
@@ -17,6 +17,8 @@
     color: var(--color-sponsor-primary);
     text-transform: uppercase;
     letter-spacing: -1px;
+    z-index: 102;
+    /* Ensure logo stays above menu */
 }
 
 .nav {
@@ -43,21 +45,18 @@
 }
 
 .donateBtn {
-    background-color: #D32F2F;
-    /* Red/Pink for higher urgency/visibility per feedback */
+    background-color: var(--color-sponsor-primary);
     color: white;
-    padding: 12px 28px;
-    /* Larger touch target */
-    border-radius: 30px;
-    font-weight: 700;
-    font-size: 1rem;
-    transition: background-color 0.2s, transform 0.1s;
-    box-shadow: 0 4px 6px rgba(211, 47, 47, 0.2);
+    padding: 10px 24px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: background-color 0.2s;
+    white-space: nowrap;
 }
 
 .donateBtn:hover {
-    background-color: #B71C1C;
-    transform: translateY(-2px);
+    background-color: #483CB5;
 }
 
 .userIcon {
@@ -69,4 +68,68 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
+}
+
+.mobileToggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text-main);
+    z-index: 102;
+    padding: 8px;
+}
+
+.mobileActions {
+    display: none;
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+    .header {
+        padding: 0 20px;
+    }
+
+    .mobileToggle {
+        display: block;
+    }
+
+    /* Hide desktop actions except user icon if desired, or adjust */
+    .actions .donateBtn {
+        display: none;
+    }
+
+    .nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background-color: var(--color-white);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 40px;
+        transform: translateY(-100%);
+        transition: transform 0.3s ease-in-out;
+        z-index: 101;
+    }
+
+    .navOpen {
+        transform: translateY(0);
+    }
+
+    .link {
+        font-size: 1.5rem;
+    }
+
+    .mobileActions {
+        display: block;
+        margin-top: 20px;
+    }
+
+    .mobileActions .donateBtn {
+        font-size: 1.2rem;
+        padding: 12px 32px;
+    }
 }

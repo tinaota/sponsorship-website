@@ -65,10 +65,3 @@
     border-color: var(--color-sponsor-primary);
     outline: none;
 }
-
-.activeSelect {
-    border-color: var(--color-sponsor-primary);
-    background-color: #F0EDFF;
-    /* Light purple tint for active state */
-    font-weight: 600;
-}
