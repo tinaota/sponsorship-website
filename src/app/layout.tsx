@@ -21,7 +21,6 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={manrope.variable} suppressHydrationWarning={true}>
-                <a href="#main-content" className="skipLink">Skip to main content</a>
                 {children}
             </body>
         </html>

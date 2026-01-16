@@ -1,85 +1,129 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useRef } from 'react';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Calendar, Heart, TrendingUp } from 'lucide-react';
+import { ANIMATION_CONFIG, getAnimationDuration } from '@/utils/animationConfig';
 import styles from './ImpactStats.module.css';
 
+gsap.registerPlugin(ScrollTrigger);
+
 export default function ImpactStats() {
-    const [yearsCount, setYearsCount] = useState(0);
-    const [childrenCount, setChildrenCount] = useState(0);
-    const [fundsCount, setFundsCount] = useState(0);
     const sectionRef = useRef<HTMLElement>(null);
-    const [hasAnimated, setHasAnimated] = useState(false);
+    const yearsRef = useRef<HTMLSpanElement>(null);
+    const childrenRef = useRef<HTMLSpanElement>(null);
+    const fundsRef = useRef<HTMLSpanElement>(null);
+    const statsRef = useRef<HTMLDivElement[]>([]);
 
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                if (entries[0].isIntersecting && !hasAnimated) {
-                    setHasAnimated(true);
-
-                    // Animate years
-                    let years = 0;
-                    const yearsInterval = setInterval(() => {
-                        years += 1;
-                        setYearsCount(years);
-                        if (years >= 60) clearInterval(yearsInterval);
-                    }, 20);
-
-                    // Animate children
-                    let children = 0;
-                    const childrenInterval = setInterval(() => {
-                        children += 2000;
-                        setChildrenCount(children);
-                        if (children >= 100000) {
-                            setChildrenCount(100000);
-                            clearInterval(childrenInterval);
-                        }
-                    }, 20);
-
-                    // Animate funds
-                    let funds = 0;
-                    const fundsInterval = setInterval(() => {
-                        funds += 1;
-                        setFundsCount(funds);
-                        if (funds >= 85) clearInterval(fundsInterval);
-                    }, 30);
-                }
+    useGSAP(() => {
+        // Entrance animation - fade + scale
+        gsap.from(statsRef.current, {
+            opacity: 0,
+            scale: 0.95,
+            y: 30,
+            duration: getAnimationDuration(ANIMATION_CONFIG.duration.slow),
+            stagger: ANIMATION_CONFIG.stagger.slow,
+            ease: ANIMATION_CONFIG.ease.default,
+            scrollTrigger: {
+                trigger: sectionRef.current,
+                start: 'top 80%',
+                toggleActions: 'play none none none',
             },
-            { threshold: 0.3 }
-        );
+        });
 
-        if (sectionRef.current) {
-            observer.observe(sectionRef.current);
+        // Counter animations
+        const counterDuration = getAnimationDuration(1.5);
+
+        // Years counter
+        if (yearsRef.current) {
+            gsap.to(yearsRef.current, {
+                textContent: 60,
+                duration: counterDuration,
+                ease: 'power1.out',
+                snap: { textContent: 1 },
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: 'top 80%',
+                    toggleActions: 'play none none none',
+                },
+                onUpdate: function () {
+                    if (yearsRef.current) {
+                        yearsRef.current.textContent = Math.ceil(Number(yearsRef.current.textContent)) + '+';
+                    }
+                },
+            });
         }
 
-        return () => observer.disconnect();
-    }, [hasAnimated]);
+        // Children counter
+        if (childrenRef.current) {
+            gsap.to(childrenRef.current, {
+                textContent: 100000,
+                duration: counterDuration,
+                ease: 'power1.out',
+                snap: { textContent: 1000 },
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: 'top 80%',
+                    toggleActions: 'play none none none',
+                },
+                onUpdate: function () {
+                    if (childrenRef.current) {
+                        const value = Math.ceil(Number(childrenRef.current.textContent));
+                        childrenRef.current.textContent = value.toLocaleString() + '+';
+                    }
+                },
+            });
+        }
+
+        // Funds counter
+        if (fundsRef.current) {
+            gsap.to(fundsRef.current, {
+                textContent: 85,
+                duration: counterDuration,
+                ease: 'power1.out',
+                snap: { textContent: 1 },
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: 'top 80%',
+                    toggleActions: 'play none none none',
+                },
+                onUpdate: function () {
+                    if (fundsRef.current) {
+                        fundsRef.current.textContent = Math.ceil(Number(fundsRef.current.textContent)) + '%';
+                    }
+                },
+            });
+        }
+    }, { scope: sectionRef });
 
     return (
         <section className={styles.section} ref={sectionRef}>
             <div className={styles.grid}>
-                <div className={styles.stat}>
+                <div className={styles.stat} ref={(el) => { if (el) statsRef.current[0] = el; }}>
                     <div className={styles.iconWrapper}>
                         <Calendar size={40} color="white" />
                     </div>
-                    <span className={styles.number}>{yearsCount}+</span>
+                    <span ref={yearsRef} className={styles.number}>0+</span>
                     <span className={styles.label}>Years of Service</span>
                 </div>
-                <div className={styles.stat}>
+                <div className={styles.stat} ref={(el) => { if (el) statsRef.current[1] = el; }}>
                     <div className={styles.iconWrapper}>
                         <Heart size={40} color="white" />
                     </div>
-                    <span className={styles.number}>{childrenCount.toLocaleString()}+</span>
+                    <span ref={childrenRef} className={styles.number}>0+</span>
                     <span className={styles.label}>Children Supported</span>
                 </div>
-                <div className={styles.stat}>
+                <div className={styles.stat} ref={(el) => { if (el) statsRef.current[2] = el; }}>
                     <div className={styles.iconWrapper}>
                         <TrendingUp size={40} color="white" />
                     </div>
-                    <span className={styles.number}>{fundsCount}%</span>
+                    <span ref={fundsRef} className={styles.number}>0%</span>
                     <span className={styles.label}>Funds to Programs</span>
                 </div>
             </div>
         </section>
     );
 }
+

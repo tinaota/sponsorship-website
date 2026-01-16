@@ -1,8 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import ChildCard from './ChildCard';
+import { ANIMATION_CONFIG, getAnimationDuration } from '@/utils/animationConfig';
 import styles from './ChildGrid.module.css';
+
+gsap.registerPlugin(ScrollTrigger);
 
 // Added gender to mock data for filtering
 const MOCK_CHILDREN = [
@@ -27,6 +33,8 @@ interface ChildGridProps {
 
 export default function ChildGrid({ filters }: ChildGridProps) {
     const [view, setView] = useState<'grid' | 'list'>('grid');
+    const gridRef = useRef<HTMLDivElement>(null);
+    const cardsRef = useRef<HTMLDivElement[]>([]);
 
     const filteredChildren = MOCK_CHILDREN.filter(child => {
         if (!filters) return true;
@@ -55,8 +63,51 @@ export default function ChildGrid({ filters }: ChildGridProps) {
         return 0;
     });
 
+    // Animate cards on scroll
+    useGSAP(() => {
+        if (cardsRef.current.length === 0) return;
+
+        // Set initial state
+        gsap.set(cardsRef.current, {
+            opacity: 0,
+            y: 30,
+        });
+
+        // Batch animate cards as they enter viewport
+        ScrollTrigger.batch(cardsRef.current, {
+            onEnter: (batch) => {
+                gsap.to(batch, {
+                    opacity: 1,
+                    y: 0,
+                    duration: getAnimationDuration(ANIMATION_CONFIG.duration.normal),
+                    stagger: ANIMATION_CONFIG.stagger.normal,
+                    ease: ANIMATION_CONFIG.ease.default,
+                });
+            },
+            start: 'top 85%',
+            once: true,
+        });
+    }, { dependencies: [sortedChildren.length], scope: gridRef });
+
+    // Re-animate when filters change
+    useEffect(() => {
+        if (cardsRef.current.length > 0) {
+            gsap.fromTo(
+                cardsRef.current,
+                { opacity: 0, scale: 0.9 },
+                {
+                    opacity: 1,
+                    scale: 1,
+                    duration: getAnimationDuration(ANIMATION_CONFIG.duration.fast),
+                    stagger: ANIMATION_CONFIG.stagger.fast,
+                    ease: ANIMATION_CONFIG.ease.default,
+                }
+            );
+        }
+    }, [filters]);
+
     return (
-        <div className={styles.gridWrapper}>
+        <div className={styles.gridWrapper} ref={gridRef}>
             <div className={styles.header}>
                 <span className={styles.count}>Showing {sortedChildren.length} children</span>
                 <div className={styles.viewToggle}>
@@ -76,8 +127,15 @@ export default function ChildGrid({ filters }: ChildGridProps) {
             </div>
 
             <div className={styles.grid}>
-                {sortedChildren.map((child) => (
-                    <ChildCard key={child.id} {...child} />
+                {sortedChildren.map((child, index) => (
+                    <div
+                        key={child.id}
+                        ref={(el) => {
+                            if (el) cardsRef.current[index] = el;
+                        }}
+                    >
+                        <ChildCard {...child} />
+                    </div>
                 ))}
                 {sortedChildren.length === 0 && (
                     <div className={styles.noResults} style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '40px' }}>
@@ -88,3 +146,4 @@ export default function ChildGrid({ filters }: ChildGridProps) {
         </div>
     );
 }
+
